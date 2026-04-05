@@ -85,7 +85,7 @@ if st.button(
     key="send uploaded image",
     help="Click to predict objects in your uploaded image"
 ) and uploaded_image:
-    rgb_image = Image.open(uploaded_image).convert("RGB")
+    rgb_image = Image.open(uploaded_image).resize((800, 800)).convert("RGB")
     image_tensor = T.PILToTensor()(rgb_image)
     plotted_uploaded_image = detect_objects(model, weights, image_tensor)
     st.image(plotted_uploaded_image)

@@ -1,13 +1,13 @@
 from torchvision.io.image import decode_image
-from torchvision.models.detection import fasterrcnn_resnet50_fpn_v2, FasterRCNN_ResNet50_FPN_V2_Weights
+from torchvision.models.detection import fasterrcnn_resnet50_fpn, FasterRCNN_ResNet50_FPN_Weights
 from torchvision.utils import draw_bounding_boxes
 from torchvision.transforms.functional import to_pil_image
 
 FONT_TTF_PATH = "./assets/fonts/Roboto-VariableFont_wdth,wght.ttf"
 
 ## fetch the model weights and initialize the model
-weights = FasterRCNN_ResNet50_FPN_V2_Weights.DEFAULT
-model = fasterrcnn_resnet50_fpn_v2(weights=weights, box_score_thresh=0.9)
+weights = FasterRCNN_ResNet50_FPN_Weights.DEFAULT
+model = fasterrcnn_resnet50_fpn(weights=weights, box_score_thresh=0.9)
 model.eval()
 
 ## helper function for predicting objects in an image
