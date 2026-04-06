@@ -1,5 +1,9 @@
 # Object Detection Activity
 
+Streamlit app for learning object detection
+
+https://learn-object-detection-fun-2026.streamlit.app
+
 ## Overview
 
 This Streamlit app is designed to provide a gentle introduction to object detection models to a non-technical audience. Users can follow the prompts in the app to learn the definiton of an object detection model and expand their learning by making their own model on [Teachable Machine](https://teachablemachine.withgoogle.com). The goal is to get people excited about learning not just object detection, but also the topic of machine learning.
