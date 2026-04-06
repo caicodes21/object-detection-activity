@@ -1,9 +1,9 @@
-from object_detection_helpers import model, weights, detect_objects, decode_image
+from object_detection_helpers import *
 from PIL import Image
-import streamlit as st
-import torchvision.transforms as T
 
 IMAGE_FOLDER_PATH = "./assets/images/"
+
+model, weights = initialize_model()
 
 st.title("What is an Object Detection Model?")
 
@@ -41,6 +41,11 @@ st.header("Try a Model Out")
 st.markdown('''
 Let's try running a model on the image from above. 
 
+The model we will use is the SSDLite320 MobileNetV3 Large model from PyTorch, an open-source project used by researchers to create 
+machine learning models. This model uses a feature extractor called MobileNetV3 Large, which is like a specific blueprint of 
+instructions for detecting key details in an image. Without this blueprint, the model would have a hard time finding 
+information that helps it spot and identify objects.
+
 Click the button below to see what the model predicts are in the image from above.
 ''')
 
@@ -49,25 +54,15 @@ if st.button(
     key="send sample image",
     help="Click to predict the objects in the image"
 ):
-    image = decode_image(IMAGE_FOLDER_PATH + "sample_objects.jpg")
-    plotted_image = detect_objects(model, weights, image)
-    st.image(plotted_image)
+    st.image(detect_objects(model, weights, decode_image(IMAGE_FOLDER_PATH + "sample_objects.jpg"), 4))
     st.caption("Hooray! The model correctly found the potted plant, vase, apple, and bottle.")
-
-st.markdown('''
-The model we just used is called Faster R-CNN from PyTorch, an open-source project used by researchers to create 
-machine learning models. The Faster R-CNN model uses a blueprint of instructions for detecting key details in an 
-image. The blueprint used by the Faster R-CNN model is called ResNet50-FPN. Without this blueprint, the model 
-has a hard time finding information that helps it spot and identify objects.
-''')
 
 st.header("Upload an Image")
 
 st.markdown('''
-Are you curious to see what the Faster R-CNN model can also recognize? Try taking an image of a common everyday object, 
+Are you curious to see what the SSDLite320 MobileNetV3 Large model from PyTorch can also recognize? Try taking an image of a common object, 
 like a cat, dog, computer, chair, table, or TV.
 ''')
-
 
 uploaded_image = st.file_uploader(
     label="Upload an image of an everyday object",
@@ -78,16 +73,15 @@ uploaded_image = st.file_uploader(
 )
 
 if uploaded_image:
-    st.image(uploaded_image)
+    st.image(Image.open(uploaded_image).resize((256, 256)))
 
 if st.button(
     label="Send to model",
     key="send uploaded image",
     help="Click to predict objects in your uploaded image"
 ) and uploaded_image:
-    rgb_image = Image.open(uploaded_image).resize((800, 800)).convert("RGB")
-    image_tensor = T.PILToTensor()(rgb_image)
-    plotted_uploaded_image = detect_objects(model, weights, image_tensor)
+    resized_image = Image.open(uploaded_image).resize((256, 256)).convert("RGB")
+    plotted_uploaded_image = detect_objects(model, weights, T.PILToTensor()(resized_image), 1)
     st.image(plotted_uploaded_image)
     st.markdown("Did the model correctly identify the object? If not, try another image.")
 
@@ -98,17 +92,17 @@ The process of creating an object detection model is complex. Here is a simplifi
 
 1. Gather many images for training the model (could be thousands to millions).
 2. Format the images to meet certain requirements, such as specific height or width.
-3. Send the formatted images to a computer that runs a training algorithm. A training algorithm is a sequence 
+3. Send the formatted images to a computer that runs a training algorithm. A **training algorithm** is a sequence 
 of steps for finding patterns and trends that are present in objects of the same type (ex: apples are red, 
 oranges are round, cars have wheels). Over time, the computer starts to associate these patterns with 
-specific objects, makes some wrong predictions, and learns from those mistakes.
+specific objects. It practices making some predictions on the training images, and it learns from the wrong predictions.
 4. Once the training algorithm is done running, the computer generates a model that can be used.
 ''')
 
 st.header("Let's Make Your Own Model")
 
 st.markdown('''
-Traditionally, making a model is time-consuming and costly. However, the barrier to making custom models is 
+Traditionally, making an object detection model is time-consuming and costly. However, the barrier to making custom models is 
 now much smaller. [Teachable Machine](https://teachablemachine.withgoogle.com) is a project that makes it 
 simple for people to make models for free.
 
@@ -153,7 +147,7 @@ good enough for this activity.''')
 
 st.markdown('''
 Once training starts, your browser will run a package called Tensorflow, another open-source project 
-that is commonly used to make models. Your browser uses Tensorflow to run the training algorithm. Essentially, the 
+that is commonly used to make models. Your browser uses Tensorflow to run a training algorithm. Essentially, the 
 browser is training a pre-trained model to become really good at recognizing the objects that you uploaded. Think of it 
 like training a chef with average cooking skills to become exceptional at specifc skills, such peeling potatoes or cutting 
 a chicken. For more details, check out Teachable Machine's [FAQ](https://teachablemachine.withgoogle.com/faq).
@@ -165,7 +159,9 @@ a chicken. For more details, check out Teachable Machine's [FAQ](https://teachab
 st.header("Step 3: Test Your Model")
 
 st.markdown('''
-Once the model is done training, you will need to send images to the model to test it. There are two ways to do so:
+Once the training is done, you will need to send images to the model to test it. 
+
+There are two options:
 
 1. Webcam: Give access to your device's camera so that the model will search for the objects in the camera's live feed.
 2. Manual Upload: Upload an image for testing.
@@ -194,5 +190,5 @@ st.header("Wrap-Up", divider="gray")
 st.markdown('''
 Through this activity, you have learned what an object detection model is and how to make a 
 small model of your own. There are many fascinating models out there. Keep learning and exploring 
-the field of machine learning.
+the field of machine learning!
 ''')
