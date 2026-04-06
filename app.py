@@ -62,6 +62,9 @@ st.header("Upload an Image")
 st.markdown('''
 Are you curious to see what the SSDLite320 MobileNetV3 Large model from PyTorch can also recognize? Try taking an image of a common object, 
 like a cat, dog, computer, chair, table, or TV.
+
+**Tip:** This app rotates the image if it is uploaded from a phone. If you are using a phone, upload a photo that was taken when the phone was 
+held horziontally (not upright).
 ''')
 
 uploaded_image = st.file_uploader(
