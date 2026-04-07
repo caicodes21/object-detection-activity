@@ -88,7 +88,7 @@ if st.button(
     st.image(plotted_uploaded_image)
     st.markdown("Did the model correctly identify the object? If not, try another image.")
 
-st.header("How is an Oject Detection Model Made?", divider="gray")
+st.header("How is an Object Detection Model Made?", divider="gray")
 
 st.markdown('''
 The process of creating an object detection model is complex. Here is a simplified breakdown:
@@ -125,7 +125,7 @@ Let's make one now!
 st.header("Step 1: Gather Some Images")
 
 st.markdown('''
-Head over to the [image training page](https://teachablemachine.withgoogle.com/train/image) of the Teachable Machine website. 
+On a **laptop or desktop**, head over to the [image training page](https://teachablemachine.withgoogle.com/train/image) of the Teachable Machine website. 
 
 **Task:** Upload at least 10 images of two different objects, which are also known as classes. Make sure you label the names 
 of the classes. Try to make every image slightly different so that the model is trained to recognize the object under different conditions, 
